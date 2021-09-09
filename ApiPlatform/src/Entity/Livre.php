@@ -31,17 +31,79 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      }
  *  },
  *     collectionOperations={
- *        "get_role_adherent" = {
+ *        "get_col_role_adherent" = {
  *             "method" = "GET",
  *             "path" = "/adherent/livres",
+ *             "access_control" = "is_granted('ROLE_ADHERENT')",
+ *             "access_controle_message"= "Vous n'avez pas les droits d'accès à ses ressources",
+ *              
  *             "normalization_context" ={
  *                    "groups" ={"get_role_adherent"}
  * 
  * 
  *              }
+ *         },
+ *        "get_col_role_manager" = {
+ *             "method" = "GET",
+ *             "path" = "/manager/livres",
+ *             "access_control" = "is_granted('ROLE_MANAGER')",
+ *             "access_controle_message"= "Vous n'avez pas les droits d'accès à ses ressources"
+ *              
+ *         },
+ *        "post" ={
+ *             "method" = "POST",
+ *            "access_control" = "is_granted('ROLE_MANAGER')",
+ *            "access_controle_message"= "Vous n'avez pas les droits d'accès à ses ressources"
+ *              
  *         }
  * 
  * 
+ *    },
+ *    itemOperations = {
+ *     "get_item_role_adherent" = {
+ *             "method" = "GET",
+ *             "path" = "/adherent/livres/{id}",
+ *             "access_control" = "is_granted('ROLE_ADHERENT')",
+ *             "access_controle_message"= "Vous n'avez pas les droits d'accès à ses ressources",
+ *              
+ *             "normalization_context" ={
+ *                    "groups" ={"get_role_adherent"}
+ * 
+ * 
+ *              }
+ *         },
+ *      "get_item_role_manager" = {
+ *             "method" = "GET",
+ *             "path" = "/manager/livres/{id}",
+ *             "access_control" = "is_granted('ROLE_MANAGER')",
+ *             "access_controle_message"= "Vous n'avez pas les droits d'accès à ses ressources"
+ *              
+ *         },
+ *      "put_item_role_manager" = {
+ *             "method" = "PUT",
+ *             "path" = "/manager/livres/{id}",
+ *             "access_control" = "is_granted('ROLE_MANAGER')",
+ *             "access_controle_message"= "Vous n'avez pas les droits d'accès à ses ressources",
+ *              "denormalization_context" ={
+ *                    "groups" ={"put_manager"}
+ * 
+ * 
+ *              } 
+ *         },
+ *      "put_item_role_admin" = {
+ *             "method" = "PUT",
+ *             "path" = "/admin/livres/{id}",
+ *             "access_control" = "is_granted('ROLE_ADMIN')",
+ *             "access_controle_message"= "Vous n'avez pas les droits d'accès à ses ressources"
+ *         },
+ *       "delete" = {
+ *             "method" = "DELETE",
+ *             "path" = "/admin/livres/{id}",
+ *             "access_control" = "is_granted('ROLE_ADMIN')",
+ *             "access_controle_message"= "Vous n'avez pas les droits d'accès à ses ressources"
+ *         }
+ *         
+ *         
  *    }
  * ),
  * @ApiFilter(
@@ -91,6 +153,7 @@ class Livre
      * @Groups({"listeGenreFull"})
      * @Groups({"listeAuteurFull"})
      * @Groups({"get_role_adherent"})
+     * @Groups({"put_manager"})
      */
     private $isbn;
 
@@ -99,6 +162,7 @@ class Livre
      * @Groups({"listeGenreFull"})
      * @Groups({"listeAuteurFull"})
      * @Groups({"get_role_adherent"})
+     * @Groups({"put_manager"})
      */
     private $titre;
 
@@ -113,6 +177,7 @@ class Livre
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"listeAuteurFull"})
      * @Groups({"get_role_adherent"})
+     * @Groups({"put_manager"})
      */
     private $genre;
 
@@ -122,6 +187,7 @@ class Livre
      * @Groups({"listeGenreFull"})
      * @Groups({"get_role_adherent"})
      * @Groups({"listeAuteurFull"})
+     * @Groups({"put_manager"})
      */
     private $editeur;
 
@@ -129,6 +195,7 @@ class Livre
      * @ORM\ManyToOne(targetEntity=Auteur::class, inversedBy="livres")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"listeGenreFull"})
+     * @Groups({"put_manager"})
      */
     private $auteur;
 
@@ -137,6 +204,7 @@ class Livre
      * @Groups({"listeGenreFull"})
      * @Groups({"listeAuteurFull"})
      * @Groups({"get_role_adherent"})
+     * @Groups({"put_manager"})
      */
     private $annee;
 
@@ -145,6 +213,7 @@ class Livre
      * @Groups({"listeGenreFull"})
      * @Groups({"listeAuteurFull"})
      * @Groups({"get_role_adherent"})
+     * @Groups({"put_manager"})
      */
     private $langue;
 
