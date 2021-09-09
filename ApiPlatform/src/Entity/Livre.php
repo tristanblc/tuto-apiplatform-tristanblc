@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Pret;
 use App\Entity\Genre;
 use App\Entity\Auteur;
 use App\Entity\Editeur;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\LivreRepository;
 use ApiPlatform\Core\Api\FilterInterface;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
@@ -25,23 +27,31 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *   attributes={
  *      "order" = {
  *           "titre": "ASC",
- *           "prix" : "DESC"
+
  *      }
- * }),
+ *  },
+ *     collectionOperations={
+ *        "get_role_adherent" = {
+ *             "method" = "GET",
+ *             "path" = "/adherent/livres",
+ *             "normalization_context" ={
+ *                    "groups" ={"get_role_adherent"}
+ * 
+ * 
+ *              }
+ *         }
+ * 
+ * 
+ *    }
+ * ),
  * @ApiFilter(
  *   SearchFilter::class,
  *   properties={
  *      "titre": "ipartial",
- *      "author": "exact"
+ *      "author": "exact",
+ *      "genre" : "exact"
  *   }
  * 
- * 
- * )
- * * @ApiFilter(
- *   RangeFilter::class,
- *   properties={
- *      "prix"
- *   }
  * 
  * )
  * @ApiFilter(
@@ -80,6 +90,7 @@ class Livre
      * @ORM\Column(type="string", length=255)
      * @Groups({"listeGenreFull"})
      * @Groups({"listeAuteurFull"})
+     * @Groups({"get_role_adherent"})
      */
     private $isbn;
 
@@ -87,6 +98,7 @@ class Livre
      * @ORM\Column(type="string", length=255)
      * @Groups({"listeGenreFull"})
      * @Groups({"listeAuteurFull"})
+     * @Groups({"get_role_adherent"})
      */
     private $titre;
 
@@ -100,6 +112,7 @@ class Livre
      * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="livres")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"listeAuteurFull"})
+     * @Groups({"get_role_adherent"})
      */
     private $genre;
 
@@ -107,6 +120,7 @@ class Livre
      * @ORM\ManyToOne(targetEntity=Editeur::class, inversedBy="livres")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"listeGenreFull"})
+     * @Groups({"get_role_adherent"})
      * @Groups({"listeAuteurFull"})
      */
     private $editeur;
@@ -122,6 +136,7 @@ class Livre
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"listeGenreFull"})
      * @Groups({"listeAuteurFull"})
+     * @Groups({"get_role_adherent"})
      */
     private $annee;
 
@@ -129,6 +144,7 @@ class Livre
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"listeGenreFull"})
      * @Groups({"listeAuteurFull"})
+     * @Groups({"get_role_adherent"})
      */
     private $langue;
 
