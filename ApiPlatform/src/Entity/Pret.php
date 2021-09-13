@@ -2,10 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Livre;
+use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PretRepository;
+use Doctrine\ORM\Mapping\PreUpdate;
+use Doctrine\ORM\Mapping\PrePersist;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * 
@@ -159,4 +164,40 @@ class Pret
 
         return $this;
     }
+    /**
+     * @ORM\PrePersist
+     * @return void
+     */
+
+
+    public function RendInsDispoLivre(){
+        $this->getLivre()->setDispo(false);
+    }
+    
+    
+     /**
+     * @ORM\PreUpdate
+     * @return void
+     */
+
+
+    public function RendDispoLivreApresMaj(){
+       if($this->dateRetourReelle == null){
+           $this->getLivre()->setDispo(false);
+       }else{
+        $this->getLivre()->setDispo(true); 
+       }
+    } 
+
+    /**
+     * @ORM\PreRemove
+     * @return void
+     */
+
+
+    public function RendDispoLivreApresSuppression(){
+        $this->getLivre()->setDispo(true);
+    }
 }
+
+
